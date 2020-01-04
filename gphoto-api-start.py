@@ -1,6 +1,5 @@
 
 from __future__ import print_function
-from googleapiclient import discovery
 from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
@@ -23,8 +22,22 @@ else:
     for item in items:
         print('{0} ({1})'.format(item['title'].encode('utf8'), item['id']))
 
-## Call the Photo v1 API and list specified album contents
-service2 = build('photoslibrary', 'v1', credentials=creds)
+## list specified album contents
+'''service = build('photoslibrary', 'v1', credentials=creds)
 albumId = 'AN5LCg2dhgcFxXip9PR6BUea4QMk3WlQR50QqJuA2hgF0VEjL28zQ0Zjqsmg6FHQMWDElr5ZtvN4'  # Please set the album ID.
-results2 = service2.mediaItems().search(body={'albumId': albumId}).execute()
-print(results2)
+results2 = service.mediaItems().search(body={'albumId': albumId}).execute()
+print(results2)'''
+
+#filter photos including me
+results3 = service.mediaItems().search(body={
+    "filters": {
+      "contentFilter": {
+        "includedContentCategories": [
+          "SELFIES"
+        ]
+      }
+    }
+  }
+).execute()
+
+print(results3)
